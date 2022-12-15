@@ -25,6 +25,12 @@ Route::get("/cart", [ClientController::class, "cart"]);
 Route::get("/checkout", [ClientController::class, "checkout"]);
 Route::get("/register", [ClientController::class, "register"]);
 Route::get("/sigin", [ClientController::class, "sigin"]);
+Route::get("/addtocart/{id}", [ClientController::class, "addToCart"]);
+Route::put("/cart/updateqty/{id}", [ClientController::class, "updateQty"]);
+Route::get("/cart/removeitem/{id}", [ClientController::class, "removeItem"]);
+Route::post("/createaccount", [ClientController::class, "createAccount"]);
+Route::post("/accesaccount", [ClientController::class, "accesAccount"]);
+Route::get("/logout", [ClientController::class, "logout"]);
 
 // Admin
 Route::get("/admin", [AdminController::class, "admin"]);

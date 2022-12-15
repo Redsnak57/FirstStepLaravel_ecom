@@ -39,78 +39,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="frontEnd/images/img-pro-01.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Lorem ipsum dolor sit amet
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="frontEnd/images/img-pro-02.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Lorem ipsum dolor sit amet
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 60.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="frontEnd/images/img-pro-03.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Lorem ipsum dolor sit amet
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 30.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
+                                @foreach (Session::get("topCart") as $product)
+                                    <tr>
+                                        <td class="thumbnail-img">
+                                            <a href="#">
+                                                <img class="img-fluid" src="{{asset("storage/productImage/$product[product_image]")}}" alt="" />
+                                            </a>
+                                        </td>
+                                        <td class="name-pr">
+                                            <a href="#">
+                                                {{$product["product_name"]}}
+                                            </a>
+                                        </td>
+                                        <td class="price-pr">
+                                            <p>{{$product["product_price"]}}€</p>
+                                        </td>
+                                        <td class="quantity-box">
+                                            <form action="{{url("/cart/updateqty", [$product['product_id']])}}" method="POST">
+                                                @csrf
+                                                @method("PUT")
+                                                <input type="number" size="4" value="{{$product["qty"]}}" min="0" step="1" class="c-input-text qty text" name="qty">
+                                                <br>
+                                                <input type="submit" class="btn btn-dark" value="Update">
+                                            </form>
+                                        </td>
+
+                                        <td class="total-pr">
+                                            <p>{{number_format($product["product_price"], 1) * $product["qty"]}}€</p>
+                                        </td>
+                                        <td class="remove-pr">
+                                            <a href="{{url("cart/removeitem", [$product['product_id']])}}">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -164,7 +127,7 @@
                         <hr>
                         <div class="d-flex gr-total">
                             <h5>Grand Total</h5>
-                            <div class="ml-auto h5"> $ 388 </div>
+                            <div class="ml-auto h5">{{Session::get("cart")->totalPrice}}€</div>
                         </div>
                         <hr> </div>
                 </div>
