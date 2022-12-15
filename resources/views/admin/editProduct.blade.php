@@ -1,7 +1,7 @@
 @extends('adminLayout.master')
 
 @section('title')
-    Add Product
+    Edit Product
 @endsection
 
 @section('content')
@@ -48,21 +48,22 @@
                     @endforeach
                   </div>
               @endif
-              <form id="quickForm" action="{{url("admin/saveproduct")}}" method="POST" enctype="multipart/form-data">
+              <form id="quickForm" action="{{url("admin/updateproduct/$product->id")}}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method("PUT")
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Product name</label>
-                    <input type="text" name="product_name" class="form-control" id="exampleInputEmail1" placeholder="Enter product name" required>
+                    <input type="text" name="product_name" class="form-control" id="exampleInputEmail1" value="{{$product->product_name}}" required>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Product price</label>
-                    <input type="float" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Enter product price" min="1" required>
+                    <input type="float" name="product_price" class="form-control" id="exampleInputEmail1" value="{{$product->product_price}}" required>
                   </div>
                   <div class="form-group">
                     <label>Product category</label>
                     <select class="form-control select2" style="width: 100%;" name="product_category" required>
-                      <option selected="selected">Selectionner</option>
+                      <option selected="selected" value="{{$product->product_category}}">{{$product->product_category}}</option>
                       @foreach ($categories as $category)
                           <option>{{$category->category_name}}</option>
                       @endforeach

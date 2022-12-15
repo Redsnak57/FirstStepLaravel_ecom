@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Slider;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -31,11 +32,13 @@ class AdminController extends Controller
     }
 
     public function addProduct(){
-        return view("admin.addProduct");
+        $categories = Category::get();
+        return view("admin.addProduct")->with("categories", $categories);
     }
 
     public function products(){
-        return view("admin.products");
+        $product = Product::get();
+        return view("admin.products")->with("products", $product);
     }
 
     public function orders(){

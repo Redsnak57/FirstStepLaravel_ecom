@@ -37,6 +37,11 @@
               <div class="card-header">
                 <h3 class="card-title">All Products</h3>
               </div>
+              @if (Session::has("status"))
+                  <div class="alert alert-success">
+                    {{Session::get("status")}}
+                  </div>
+              @endif
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
@@ -51,34 +56,40 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>
-                        <img src="{{asset('backEnd/dist/img/user2-160x160.jpg')}}" style="height : 50px; width : 50px" class="img-circle elevation-2" alt="User Image">
-                    </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>5</td>
-                    <td>
-                      <a href="#" class="btn btn-success">Unactivate</a>
-                      <a href="#" class="btn btn-primary"><i class="nav-icon fas fa-edit"></i></a>
-                      <a href="#" id="delete" class="btn btn-danger" ><i class="nav-icon fas fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>
-                      <img src="{{asset('backEnd/dist/img/user2-160x160.jpg')}}" style="height : 50px; width : 50px" class="img-circle elevation-2" alt="User Image">
-                    </td>
-                    <td>Win 95+</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>
-                      <a href="#" class="btn btn-warning">Activate</a>
-                      <a href="#" class="btn btn-primary"><i class="nav-icon fas fa-edit"></i></a>
-                      <a href="#" id="delete" class="btn btn-danger" ><i class="nav-icon fas fa-trash"></i></a>
-                    </td>
-                  </tr>
+                  <input type="hidden" {{$increment=1}}>
+                  @foreach ($products as $product)
+                    <tr>
+                      <td>{{$increment}}</td>
+                      <td>
+                        <img src="{{asset("storage/productImage/$product->product_image")}}" style="height : 50px; width : 50px" class="img-circle elevation-2" alt="User Image">
+                      </td>
+                      <td>{{$product->product_name}}</td>
+                      <td>{{$product->product_category}}</td>
+                      <td>{{$product->product_price}}</td>
+                      <td class="d-flex">
+                        @if ($product->status == 1)
+                          <form action="{{url("admin/unactivate/$product->id")}}" method="POST">
+                            @csrf
+                            @method("PUT")
+                            <input type="submit" class="btn btn-warning mr-2" value="Unactivate">
+                          </form>
+                        @else
+                          <form action="{{url("admin/activate/$product->id")}}" method="POST">
+                            @csrf
+                            @method("PUT")
+                            <input type="submit" class="btn btn-success mr-2" value="Activate">
+                          </form>
+                        @endif
+                        <a href="{{url("/admin/editproduct/$product->id")}}" class="btn btn-primary mr-2"><i class="nav-icon fas fa-edit"></i></a>
+                        <form action="{{url("/admin/deleteproduct/$product->id")}}" method="POST">
+                          @csrf
+                          @method("DELETE")
+                          <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                      </td>
+                    </tr>
+                    <input type="hidden" {{$increment++}} >
+                  @endforeach
                   </tbody>
                   <tfoot>
                   <tr>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,3 +47,13 @@ Route::post("/admin/saveslider", [SliderController::class, "saveSlider"]);
 Route::delete("/admin/deleteslider/{id}", [SliderController::class, "deleteSlider"]);
 Route::get("/admin/editslider/{id}", [SliderController::class, "editSlider"]);
 Route::put("/admin/updateslider/{id}", [SliderController::class, "updateSlider"]);
+Route::put("/admin/unactivate/{id}", [SliderController::class, "unactivate"]);
+Route::put("/admin/activate/{id}", [SliderController::class, "activate"]);
+
+// Admin Product
+Route::post("/admin/saveproduct", [ProductController::class, "saveProduct"]);
+Route::delete("/admin/deleteproduct/{id}", [ProductController::class, "deleteProduct"]);
+Route::get("/admin/editproduct/{id}", [ProductController::class, "editProduct"]);
+Route::put("/admin/updateproduct/{id}", [ProductController::class, "updateProduct"]);
+Route::put("/admin/unactivate/{id}", [ProductController::class, "unactivate"]);
+Route::put("/admin/activate/{id}", [ProductController::class, "activate"]);

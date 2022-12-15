@@ -71,6 +71,21 @@ class SliderController extends Controller
         }
         $slider->update();
         return redirect("admin/sliders")->with("status", "Votre slider a été modifié.");
+    }
 
+    public function unactivate($id){
+        $slider = Slider::find($id);
+        $slider->status = 0;
+        $slider->update();
+
+        return back()->with("status", "Slider désactivé.");
+    }
+
+    public function activate($id){
+        $slider = Slider::find($id);
+        $slider->status = 1;
+        $slider->update();
+
+        return back()->with("status", "Slider activé.");
     }
 }

@@ -70,7 +70,20 @@
                           {{$slider->description2}}
                         </td>
                         <td class="d-flex justify-content-center">
-                          <a href="#" class="btn btn-warning mr-2">Activate</a>
+                          @if ($slider->status ==1)
+                            <form action="{{url("admin/unactivate/$slider->id")}}" method="POST">
+                              @csrf
+                              @method("PUT")
+                              <input type="submit" class="btn btn-warning mr-2" value="Unactivate">
+                            </form>
+                          @else
+                            <form action="{{url("admin/activate/$slider->id")}}" method="POST">
+                              @csrf
+                              @method("PUT")
+                              <input type="submit" class="btn btn-success mr-2" value="Activate">
+                            </form>
+                          @endif
+                          
                           <a href="{{url("/admin/editslider/$slider->id")}}" class="btn btn-primary mr-2"><i class="nav-icon fas fa-edit"></i></a>
                           <form action="{{url("/admin/deleteslider/$slider->id")}}" method="POST">
                             @csrf
