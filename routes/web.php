@@ -43,3 +43,6 @@ Route::put("/admin/editCategory/{id}", [CategoryController::class, "editCategory
 
 // Admin Slider Controller
 Route::post("/admin/saveslider", [SliderController::class, "saveSlider"]);
+Route::delete("/admin/deleteslider/{id}", [SliderController::class, "deleteSlider"]);
+Route::get("/admin/editslider/{id}", [SliderController::class, "editSlider"]);
+Route::put("/admin/updateslider/{id}", [SliderController::class, "updateSlider"]);

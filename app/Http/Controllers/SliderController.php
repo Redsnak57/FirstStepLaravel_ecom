@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SliderController extends Controller
 {
@@ -37,5 +38,39 @@ class SliderController extends Controller
         $slider->save();
 
         return back()->with("status", "Votre slider a bien été ajouté.");
+    }
+
+    public function deleteSlider($id){
+        $slider = Slider::find($id);
+        Storage::delete("public/sliderImage/$slider->image");
+        $slider->delete();
+
+        return back()->with("status", "Votre slider a été supprimé.");
+    }
+
+    public function editslider($id){
+        $slider = Slider::find($id);
+        return view("admin.editSlider")->with('slider', $slider);
+    }
+
+    public function updateSlider(int $id, Request $request){
+        $slider = Slider::find($id);
+        $slider->description1 = $request->input("description1");
+        $slider->description2 = $request->input("description2");
+
+        if($request->file("image")){
+            $fileNameWithExtension = $request->file("image")->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+            $fileExtension = $request->file("image")->getClientOriginalExtension();
+            $fileNameToStore = $fileName."_".time().".".$fileExtension;
+            
+            Storage::delete("public/sliderImage/$slider->image");
+            $path = $request->file("image")->storeAs("public/sliderImage", $fileNameToStore);
+
+            $slider->image = $fileNameToStore;
+        }
+        $slider->update();
+        return redirect("admin/sliders")->with("status", "Votre slider a été modifié.");
+
     }
 }

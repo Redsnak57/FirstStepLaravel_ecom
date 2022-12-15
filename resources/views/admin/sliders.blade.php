@@ -37,6 +37,12 @@
               <div class="card-header">
                 <h3 class="card-title">All Sliders</h3>
               </div>
+              @if (Session::has("status"))
+                  <br>
+                  <div class="alert alert-success">
+                    {{Session::get("status")}}
+                  </div>
+              @endif
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
@@ -50,36 +56,31 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>
-                      <img src="{{asset('backEnd/dist/img/user2-160x160.jpg')}}" style="height : 50px; width : 50px" class="img-circle elevation-2" alt="User Image">
-                    </td>
-                    <td>Internet
-                      Explorer 4.0
-                    </td>
-                    <td>5</td>
-                    <td>
-                      <a href="#" class="btn btn-warning">Activate</a>
-                      <a href="#" class="btn btn-primary"><i class="nav-icon fas fa-edit"></i></a>
-                      <a href="#" id="delete" class="btn btn-danger" ><i class="nav-icon fas fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>
-                      <img src="{{asset('backEnd/dist/img/user2-160x160.jpg')}}" style="height : 50px; width : 50px" class="img-circle elevation-2" alt="User Image">
-                    </td>
-                    <td>Internet
-                      Explorer 5.0
-                    </td>
-                    <td>5</td>
-                    <td>
-                      <a href="#" class="btn btn-success">Unactivate</a>
-                      <a href="#" class="btn btn-primary"><i class="nav-icon fas fa-edit"></i></a>
-                      <a href="#" id="delete" class="btn btn-danger" ><i class="nav-icon fas fa-trash"></i></a>
-                    </td>
-                  </tr>
+                    <input type="hidden" {{$increment = 1}}>
+                    @foreach ($sliders as $slider)
+                      <tr>
+                        <td>{{$increment}}</td>
+                        <td>
+                          <img src="{{asset("storage/sliderImage/$slider->image")}}" style="height : 50px; width : 50px" class="img-circle elevation-2" alt="User Image">
+                        </td>
+                        <td>
+                          {{$slider->description1}}
+                        </td>
+                        <td>
+                          {{$slider->description2}}
+                        </td>
+                        <td class="d-flex justify-content-center">
+                          <a href="#" class="btn btn-warning mr-2">Activate</a>
+                          <a href="{{url("/admin/editslider/$slider->id")}}" class="btn btn-primary mr-2"><i class="nav-icon fas fa-edit"></i></a>
+                          <form action="{{url("/admin/deleteslider/$slider->id")}}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                          </form>
+                        </td>
+                      </tr>    
+                      <input type="hidden" {{$increment++}}>
+                    @endforeach
                   </tbody>
                   <tfoot>
                   <tr>
